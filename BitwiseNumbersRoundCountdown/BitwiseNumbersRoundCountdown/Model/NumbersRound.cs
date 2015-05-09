@@ -1,18 +1,24 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Linq.Dynamic;
+using DynamicExpression = System.Linq.Dynamic.DynamicExpression;
 
 namespace BitwiseNumbersRoundCountdown.Model
 {
     public class NumbersRound
     {
         public List<int> NumbersList { get; }
+        public List<string> OperatorsList { get; }
         public int Target { get; }
-        public int PlayerSolution;
+        public string PlayerSolutionString { get; set; }
+        public int PlayerSolution { get; set; }
 
         public NumbersRound()
         {
             NumbersList = _generateNumbers();
+            OperatorsList = new List<string>{ "~", "&", "|", "^", "<<", ">>" };
             Target = _generateTarget();
         }
 
@@ -75,6 +81,18 @@ namespace BitwiseNumbersRoundCountdown.Model
         public bool CheckResult()
         {
             return Target == PlayerSolution;
+        }
+
+        public int CalcuateSolution() {
+            //doesnt work for bitwise operators
+            var lambda = DynamicExpression.ParseLambda(new ParameterExpression[] {}, null, PlayerSolutionString);
+            return PlayerSolution = (int) lambda.Compile().DynamicInvoke();
+        }
+
+        public int CalcuateSolutionBeta()
+        {
+            var lambda = DynamicExpression.ParseLambda(new ParameterExpression[] { }, null, PlayerSolutionString);
+            return PlayerSolution = (int)lambda.Compile().DynamicInvoke();
         }
 
     }
