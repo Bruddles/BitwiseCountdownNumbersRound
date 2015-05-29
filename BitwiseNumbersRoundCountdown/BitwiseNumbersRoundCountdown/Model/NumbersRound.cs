@@ -169,7 +169,7 @@ namespace BitwiseNumbersRoundCountdown.Model
         }
 
         public void CalculateSolution() {
-            PlayerSolution = (int)CSharpScript.Eval(PlayerSolutionString);
+            PlayerSolution = (int)(CSharpScript.Eval(PlayerSolutionString) ?? 0);
         }
 
     }
