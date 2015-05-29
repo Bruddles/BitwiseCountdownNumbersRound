@@ -1,25 +1,93 @@
 using System;
+using System.Runtime;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Linq.Dynamic;
-using DynamicExpression = System.Linq.Dynamic.DynamicExpression;
+using System.Text.RegularExpressions;
+using System.Timers;
+using Microsoft.CodeAnalysis.Scripting.CSharp;
+using BitwiseNumbersRoundCountdown.ViewModel;
 
 namespace BitwiseNumbersRoundCountdown.Model
 {
-    public class NumbersRound
+    public class NumbersRound : ObservableObject
     {
-        public List<int> NumbersList { get; }
-        public List<string> OperatorsList { get; }
-        public int Target { get; }
-        public string PlayerSolutionString { get; set; }
-        public int PlayerSolution { get; set; }
+        private readonly List<int> _numbersList;
+        private readonly List<string> _operatorsList;
+        private readonly int _target;
+        private string _playerSolutionString;
+        private int _playerSolution;
+        private string _playerSolutionBinary;
+        private Timer _gameTimer;
+        private int _timeRemaining;
+
+        public List<int> NumbersList
+        {
+            get { return _numbersList; }
+        }
+
+        public List<string> OperatorsList
+        {
+            get { return _operatorsList; }
+        }
+
+        public int Target
+        {
+            get { return _target; }
+        }
+
+        public string PlayerSolutionString
+        {
+            get { return _playerSolutionString; }
+            set
+            { _playerSolutionString = value;
+                RaisePropertyChangedEvent("PlayerSolutionString");
+            }
+        }
+
+        public int PlayerSolution
+        {
+            get { return _playerSolution; }
+            set
+            {
+                _playerSolution = value;
+                PlayerSolutionBinary = Convert.ToString(_playerSolution, 2);
+                RaisePropertyChangedEvent("PlayerSolution");
+            }
+        }
+
+        public string PlayerSolutionBinary
+        {
+            get { return _playerSolutionBinary; }
+            set
+            {
+                _playerSolutionBinary = value;
+                RaisePropertyChangedEvent("PlayerSolutionBinary");
+            }
+        }
+
+        public Timer GameTimer
+        {
+            get { return _gameTimer; }
+            set { _gameTimer = value; }
+        }
+
+        public int TimeRemaining
+        {
+            get { return _timeRemaining; }
+            set
+            {
+                _timeRemaining = value;
+                RaisePropertyChangedEvent("TimeRemaining");
+            }
+        }
 
         public NumbersRound()
         {
-            NumbersList = _generateNumbers();
-            OperatorsList = new List<string>{ "~", "&", "|", "^", "<<", ">>" };
-            Target = _generateTarget();
+            _numbersList = _generateNumbers();
+            _operatorsList = new List<string>{ "~", "&", "|", "^", "<<", ">>" };
+            _target = _generateTarget();
+            PlayerSolutionString = "";
+            TimeRemaining = 30;
         }
 
         private List<int> _generateNumbers()
@@ -78,21 +146,30 @@ namespace BitwiseNumbersRoundCountdown.Model
             return returnedNum;
         }
 
+        public void StartTimer() {
+            TimeRemaining = 30;
+            GameTimer = new Timer(1000);
+            GameTimer.Elapsed += GameTimerElapsed;
+            GameTimer.Enabled = true;
+        }
+
+        public void GameTimerElapsed(object sender, ElapsedEventArgs e)
+        {
+            --TimeRemaining;
+            if (TimeRemaining == 0)
+            {
+                GameTimer.Enabled = false;
+                CalculateSolution();
+            }
+        }
+
         public bool CheckResult()
         {
             return Target == PlayerSolution;
         }
 
-        public int CalcuateSolution() {
-            //doesnt work for bitwise operators
-            var lambda = DynamicExpression.ParseLambda(new ParameterExpression[] {}, null, PlayerSolutionString);
-            return PlayerSolution = (int) lambda.Compile().DynamicInvoke();
-        }
-
-        public int CalcuateSolutionBeta()
-        {
-            var lambda = DynamicExpression.ParseLambda(new ParameterExpression[] { }, null, PlayerSolutionString);
-            return PlayerSolution = (int)lambda.Compile().DynamicInvoke();
+        public void CalculateSolution() {
+            PlayerSolution = (int)CSharpScript.Eval(PlayerSolutionString);
         }
 
     }
