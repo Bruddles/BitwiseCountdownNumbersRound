@@ -7,22 +7,33 @@
         xmlns:view="clr-namespace:BitwiseNumbersRoundCountdown.View"
         xmlns:viewModel="clr-namespace:BitwiseNumbersRoundCountdown.ViewModel"
         mc:Ignorable="d"
-        Title="Countdown Numbers Round - Bitwise Style" Height="350" Width="525">
+        Title="Countdown Numbers Round - Bitwise Style" Height="350" Width="489">
 
     <Window.DataContext>
         <viewModel:Presenter/>
     </Window.DataContext>
+    
+    <Window.Resources>
+        <Style x:Key="NumbersList">
+            
+        </Style>
+    </Window.Resources>
 
-    <Grid>
-        <view:CountdownTilesControl DataContext="{Binding Game.NumbersList}" Margin="20,60,357,219"></view:CountdownTilesControl>
+    <Grid Background="#FFACDAF0" Margin="0,0,0,0">
+        <Label x:Name="Timer" Content="{Binding Game.TimeRemaining}" HorizontalAlignment="Left" VerticalAlignment="Top" BorderBrush="White" Height="80" Width="160" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="48" BorderThickness="5"/>
+        <Label x:Name="Target" Content="{Binding Game.Target}" HorizontalAlignment="Left" Margin="162,0,0,0" VerticalAlignment="Top" BorderBrush="White" BorderThickness="5" Height="80" Width="158" FontSize="48" Background="Black" Foreground="#FFF7FF46" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+        
+        <TextBlock x:Name="PlayerSolution" HorizontalAlignment="Left" Margin="320,0,0,0"  Text="{Binding Game.PlayerSolution}" TextWrapping="Wrap" VerticalAlignment="Top" Width="160" Height="40" FontSize="24" TextAlignment="Center"/>
+        <TextBlock x:Name="PlayerSolutionBinary" HorizontalAlignment="Left" Margin="320,40,0,0" Text="0"  TextWrapping="Wrap" VerticalAlignment="Top" Width="160" Height="40" TextAlignment="Center" FontSize="24"/>
 
-        <view:CountdownTilesControl DataContext="{Binding Game.OperatorsList}" Margin="20,20,357,259"></view:CountdownTilesControl>
-        <TextBox x:Name="Solution"  HorizontalAlignment="Left" Height="140" Margin="20,100,0,0" TextWrapping="Wrap" Text="{Binding Game.PlayerSolutionString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="460"/>
-        <TextBlock x:Name="PlayerSolution" HorizontalAlignment="Left" Margin="320,20,0,0"  Text="{Binding Game.PlayerSolution}" TextWrapping="Wrap" VerticalAlignment="Top" Width="160" Height="40" FontSize="24" TextAlignment="Center"/>
-        <TextBlock x:Name="PlayerSolutionBinary" HorizontalAlignment="Left" Margin="320,60,0,0"  Text="{Binding Game.PlayerSolutionBinary}" TextWrapping="Wrap" VerticalAlignment="Top" Width="160" Height="40" TextAlignment="Center" FontSize="24"/>
+        <TextBox x:Name="Solution"  HorizontalAlignment="Left" Height="80" Margin="20,160,0,0" TextWrapping="Wrap" Text="{Binding Game.PlayerSolutionString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="440"/>
+
+        <view:CountdownTilesControl x:Name="NumbersList" DataContext="{Binding Game.NumbersList}" Margin="20,100,24,174"></view:CountdownTilesControl>
+        <view:CountdownTilesControl x:Name="OperatorList" DataContext="{Binding Game.OperatorsList}" Margin="160,260,164,19"></view:CountdownTilesControl>
+
         <Button x:Name="StartButton" Content="Start" HorizontalAlignment="Left" Margin="20,260,0,0" VerticalAlignment="Top" Width="75" Command="{Binding StartCommand}"/>
-        <Button x:Name="SubmitButton" Content="Submit" HorizontalAlignment="Left" Margin="405,260,0,0" VerticalAlignment="Top" Width="75" Command="{Binding SubmitCommand}"/>
-        <TextBlock x:Name="Timer" HorizontalAlignment="Left" Margin="160,20,0,0"  Text="{Binding Game.TimeRemaining}" TextWrapping="Wrap" VerticalAlignment="Top" Width="160" Height="80" FontSize="48" TextAlignment="Center"/>
+        <Button x:Name="SubmitButton" Content="Submit" HorizontalAlignment="Left" Margin="385,260,0,0" VerticalAlignment="Top" Width="75" Command="{Binding SubmitCommand}"/>
+        
 
 
     </Grid>

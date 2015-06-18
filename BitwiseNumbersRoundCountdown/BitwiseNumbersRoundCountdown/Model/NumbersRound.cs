@@ -13,7 +13,7 @@ namespace BitwiseNumbersRoundCountdown.Model
     {
         private readonly List<int> _numbersList;
         private readonly List<string> _operatorsList;
-        private readonly int _target;
+        private int _target;
         private string _playerSolutionString;
         private int _playerSolution;
         private string _playerSolutionBinary;
@@ -33,6 +33,11 @@ namespace BitwiseNumbersRoundCountdown.Model
         public int Target
         {
             get { return _target; }
+            set
+            {
+                _target = value;
+                RaisePropertyChangedEvent("Target");
+            }
         }
 
         public string PlayerSolutionString
@@ -100,6 +105,14 @@ namespace BitwiseNumbersRoundCountdown.Model
 
         private int _generateTarget()
         {
+            Random random = new Random();
+            int target = random.Next(0, 25);
+            return target;
+        }
+
+
+        private int _generatePossibleTarget()
+        {
             List<int> numbers = new List<int>(NumbersList);
             Random random = new Random();
             int target = _selectNumberFromList(numbers);
@@ -155,12 +168,15 @@ namespace BitwiseNumbersRoundCountdown.Model
 
         public void GameTimerElapsed(object sender, ElapsedEventArgs e)
         {
-            --TimeRemaining;
-            if (TimeRemaining == 0)
+            App.Current.Dispatcher.Invoke(delegate
             {
-                GameTimer.Enabled = false;
-                CalculateSolution();
-            }
+                --TimeRemaining;
+                if (TimeRemaining == 0)
+                {
+                    GameTimer.Enabled = false;
+                    CalculateSolution();
+                }
+            });
         }
 
         public bool CheckResult()
