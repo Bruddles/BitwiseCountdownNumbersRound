@@ -1,3 +1,6 @@
 BitwiseNumbersRoundCountdown/BitwiseNumbersRoundCountdown/bin/
 BitwiseNumbersRoundCountdown/BitwiseNumbersRoundCountdown/obj/
 BitwiseNumbersRoundCountdown/.vs/
+*.suo
+*.nupkg
+BitwiseNumbersRoundCountdown/packages/System.Linq.Dynamic.1.0.4/lib/net40/System.Linq.Dynamic.dll
