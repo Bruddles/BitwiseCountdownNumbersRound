@@ -99,7 +99,7 @@ namespace BitwiseNumbersRoundCountdown.Model
         {
             List<int> numbers = new List<int>();
             Random random = new Random();
-            for (int i = 0; i < 6; i++) numbers.Add(random.Next(0, 100));
+            for (int i = 0; i < 6; i++) numbers.Add(random.Next(0, 5));
             return numbers;
         }
 
