@@ -7,15 +7,25 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <ItemsControl Name="Control" ItemsSource="{Binding}" >
+        <ItemsControl Name="Control" ItemsSource="{Binding}" AlternationCount="7">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <StackPanel Orientation="Horizontal"/>
+                    <StackPanel Orientation="Horizontal"></StackPanel>
+                    <!--<Grid >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                    </Grid>-->
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Label Padding="5,5,5,5" Content="{Binding}"></Label>
+                    <Label Grid.Column="{Binding Path=(ItemsControl.AlternationIndex), RelativeSource={RelativeSource Mode=TemplatedParent}}" Padding="5,5,5,5" Content="{Binding}"></Label>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>

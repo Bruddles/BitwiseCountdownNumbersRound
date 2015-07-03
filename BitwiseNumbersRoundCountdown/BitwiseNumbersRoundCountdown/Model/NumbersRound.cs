@@ -166,6 +166,12 @@ namespace BitwiseNumbersRoundCountdown.Model
             GameTimer.Enabled = true;
         }
 
+        public void StopTimer()
+        {
+            GameTimer.Enabled = false;
+        }
+
+
         public void GameTimerElapsed(object sender, ElapsedEventArgs e)
         {
             App.Current.Dispatcher.Invoke(delegate

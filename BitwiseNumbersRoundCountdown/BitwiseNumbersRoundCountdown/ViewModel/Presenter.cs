@@ -6,9 +6,13 @@ using System.Windows.Input;
 namespace BitwiseNumbersRoundCountdown.ViewModel
 {
     public class Presenter : ObservableObject {
-        private static readonly Model.NumbersRound _game = new Model.NumbersRound();
+        private static Model.NumbersRound _game = new Model.NumbersRound();
 
-        public Model.NumbersRound Game => _game;
+        public Model.NumbersRound Game
+        {
+            get { return _game; }
+            set { _game = value; }
+        }
 
         public ICommand SubmitCommand
         {
@@ -18,6 +22,7 @@ namespace BitwiseNumbersRoundCountdown.ViewModel
         public void Submit()
         {
             Game.CalculateSolution();
+            Game.StopTimer();
         }
 
         public ICommand StartCommand
